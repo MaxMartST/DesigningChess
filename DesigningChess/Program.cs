@@ -56,19 +56,63 @@ namespace DesigningChess
             }
             public string Type { get; }
             public string Name { get; }
-            public (int, int) Position { get; }
-            public abstract double Step();
+            public (int x, int y) Position { get; set; }
+            public abstract void Step((int x, int y) newPositionFigure, int[,] field);
+            public abstract void SetAvailableTravelAndPosition((int x, int y) positionFigure);
         }
 
         class Pawn : Figure
         {
+            int[,] availableTravel;
+            private const int size = 8;
+
             public Pawn(string nameFigure, (int x, int y) positionFigure) : base(TypeFigure.Pawn, nameFigure, positionFigure)
-            { 
+            {
+                this.availableTravel = new int[size, size];
+
+                SetAvailableTravelAndPosition(positionFigure);
             }
 
-            public override double Step()
+            public override void Step((int x, int y) newPositionFigure, int[,] field)
             {
-                throw new NotImplementedException();
+                if (this.Position.x == newPositionFigure.x && this.Position.y == newPositionFigure.y)
+                {
+                    throw new FigureException($"Фигура под именем: {this.Name}, не может перейти на поле, на котором она уже стоит.");
+                }
+
+                if (field[newPositionFigure.x, newPositionFigure.y] == 1)
+                {
+                    throw new FigureException($"Фигура под именем: {this.Name}, не может перейти на поле, на котором она уже стоит другая фигура.");
+                }
+
+                if (availableTravel[newPositionFigure.x, newPositionFigure.y] != 1)
+                {
+                    throw new FigureException($"Новые координаты не соответствуют правилам хода для фигуры с типом {this.Type}.");
+                }
+
+                // Задать новую позицию фигуры и допустимые ходы
+                SetAvailableTravelAndPosition(newPositionFigure);
+
+                Position = newPositionFigure;
+            }
+
+            public override void SetAvailableTravelAndPosition((int x, int y) positionFigure)
+            {
+                this.availableTravel[positionFigure.x, positionFigure.y] = 1;
+
+                int x = positionFigure.x + 1;
+
+                if (x < size)
+                {
+                    this.availableTravel[x, positionFigure.y] = 1;
+                }
+
+                x = positionFigure.x - 1;
+
+                if (x >= 0)
+                {
+                    this.availableTravel[x, positionFigure.y] = 1;
+                }
             }
         }
 
@@ -86,13 +130,22 @@ namespace DesigningChess
                 Random rnd = new Random();
                 int numberFigure = 0;
 
+                // насальная позиция
+                //int x = 0;
+                //int y = 0;
+
                 while (numberFigure < amountFigures)
                 {
-                    //int numberTypeFigure = Enum.GetNames(typeof(TypeFigure)).Length;
+                    // задвем случайный тип фигуры
+                    //int maxTypeFigure = Enum.GetNames(typeof(TypeFigure)).Length;
+                    //var numberTypeFigure = rnd.Next(0, maxTypeFigure);
+
                     int numberTypeFigure = 0;
 
+                    // задаем случайные позиции фигуры, с учётом занятого поля
                     int x = rnd.Next(0, size);
                     int y = rnd.Next(0, size);
+
                     var position = (x, y);
 
                     if (this.field[x, y] == 1)
@@ -104,6 +157,10 @@ namespace DesigningChess
                     this.figures[numberFigure] = GetRandomFigure(position, numberFigure, numberTypeFigure);
 
                     numberFigure++;
+
+                    // следующая позиция
+                    //x++;
+                    //y++;
                 }
             }
 
@@ -142,10 +199,88 @@ namespace DesigningChess
                 {
                     for (int j = 0; j < size; j++)
                     {
-                        Console.Write($"{this.field[i, j]} \t");
+                        //Console.Write($"{this.field[i, j]} \t");
+                        if (this.field[i, j] == 0)
+                        {
+                            Console.Write($"{this.field[i, j]}\t\t");
+                            continue;
+                        }
+                        else
+                        {
+                            var figure = this.figures.First(f => f.Position == (i, j));
+                            Console.Write($"{figure.Name} \t");
+                        } 
                     }
                     Console.WriteLine();
                 }
+            }
+
+            public void MakeMove()
+            {
+                while (true)
+                {
+                    PrintField();
+
+                    try
+                    {
+                        Console.WriteLine("Введите имя фигуры и нажмите Enter.\nИли для выхода просто нажмите Enter...");
+                        Console.Write("Имя фмгуры: ");
+                        string input = Console.ReadLine();
+
+                        if (String.IsNullOrEmpty(input))
+                        {
+                            Console.WriteLine("Выход из игры");
+                            break;
+                        }
+
+                        // Находим индекс интересующей нас фигуры
+                        var indexFigure = GetIndexFigure(input);
+
+                        Console.WriteLine($"Введите координаты для фигуры {input} по X и Y.");
+                        (int x, int y) position;
+
+                        Console.Write("X : ");
+                        position.x = Convert.ToInt32(Console.ReadLine());
+
+                        Console.Write("Y : ");
+                        position.y = Convert.ToInt32(Console.ReadLine());
+
+                        if (position.x > size || position.x < 0 ||
+                            position.y > size || position.y < 0)
+                        {
+                            throw new FigureException($"Координаты выходят за приделы поля:\nПо оси X: от 0 до {size - 1}\nПо оси Y: от 0 до {size - 1}");
+                        }
+
+                        // Сохраняем старую позицию
+                        var tempPosition = this.figures[indexFigure].Position;
+
+                        // Делаем ход фигурой и отрабатываем исключения в случае чего
+                        this.figures[indexFigure].Step(position, this.field);
+                        
+                        // Затераем старую позицию
+                        this.field[tempPosition.x, tempPosition.y] = 0;
+
+                        // Отмечаем новую
+                        this.field[position.x, position.y] = 1;
+                    }
+                    catch (FigureException fe)
+                    {
+                        Console.WriteLine($"Ошибка: {fe.Message}.");
+                    }
+                }
+            }
+
+            private int GetIndexFigure(string numaeFigure)
+            {
+                for (int i = 0; i < this.figures.Length; i++)
+                {
+                    if (this.figures[i].Name == numaeFigure)
+                    {
+                        return i;
+                    }
+                }
+
+                throw new FigureException($"Фигура с именем {numaeFigure} ненайдена");
             }
         }
 
@@ -154,7 +289,7 @@ namespace DesigningChess
             int amountFigures = 3;
             Chess chess = new Chess(amountFigures);
 
-            chess.PrintField();
+            chess.MakeMove();
 
             Console.ReadLine();
         }
