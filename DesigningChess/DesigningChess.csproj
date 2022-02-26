@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Castle.cs" />
     <Compile Include="Chess.cs" />
+    <Compile Include="Elephant.cs" />
     <Compile Include="Figure.cs" />
     <Compile Include="FigureException.cs" />
     <Compile Include="Pawn.cs" />

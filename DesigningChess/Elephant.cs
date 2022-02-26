@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace DesigningChess
 {
-    class Pawn : Figure
+    class Elephant : Figure
     {
         int[,] availableTravel;
         private const int size = 8;
 
-        public Pawn(string nameFigure, (int x, int y) positionFigure) : 
-            base(TypeFigure.Pawn, nameFigure, positionFigure)
+        public Elephant(string nameFigure, (int x, int y) positionFigure) :
+            base(TypeFigure.Elephant, nameFigure, positionFigure)
         {
             SetAvailableTravelAndPosition(positionFigure);
         }
@@ -46,20 +46,50 @@ namespace DesigningChess
             this.availableTravel[positionFigure.x, positionFigure.y] = 1;
 
             // Отмечаем позиции, куда может сделать ход фигура
+            // Вниз справа на лево
+            int x = positionFigure.x;
+            int y = positionFigure.y;
 
-            int x = positionFigure.x + 1;
-
-            if (x < size)
+            while (x < size && y >= 0)
             {
-                this.availableTravel[x, positionFigure.y] = 1;
+                this.availableTravel[x, y] = 1;
+                x++;
+                y--;
             }
 
-            x = positionFigure.x - 1;
+            // Вверх слева на право
+            x = positionFigure.x;
+            y = positionFigure.y;
 
-            if (x >= 0)
+            while (x > 0 && y < size)
             {
-                this.availableTravel[x, positionFigure.y] = 1;
+                this.availableTravel[x, y] = 1;
+                x--;
+                y++;
             }
+
+            // Вверх справа на лево
+            x = positionFigure.x;
+            y = positionFigure.y;
+
+            while (x >= 0 && y >= 0)
+            {
+                this.availableTravel[x, y] = 1;
+                x--;
+                y--;
+            }
+
+            // Вниз слева на право
+            x = positionFigure.x;
+            y = positionFigure.y;
+
+            while (x < size && y < size)
+            {
+                this.availableTravel[x, y] = 1;
+                x++;
+                y++;
+            }
+
         }
     }
 }

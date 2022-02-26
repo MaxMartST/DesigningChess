@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace DesigningChess
 {
-    class Pawn : Figure
+    class Castle : Figure
     {
         int[,] availableTravel;
         private const int size = 8;
 
-        public Pawn(string nameFigure, (int x, int y) positionFigure) : 
-            base(TypeFigure.Pawn, nameFigure, positionFigure)
+        public Castle(string nameFigure, (int x, int y) positionFigure) : 
+            base(TypeFigure.Castle, nameFigure, positionFigure)
         {
             SetAvailableTravelAndPosition(positionFigure);
         }
@@ -46,17 +46,12 @@ namespace DesigningChess
             this.availableTravel[positionFigure.x, positionFigure.y] = 1;
 
             // Отмечаем позиции, куда может сделать ход фигура
-
-            int x = positionFigure.x + 1;
-
-            if (x < size)
+            for (int y = 0; y < size; y++)
             {
-                this.availableTravel[x, positionFigure.y] = 1;
+                this.availableTravel[positionFigure.x, y] = 1;
             }
 
-            x = positionFigure.x - 1;
-
-            if (x >= 0)
+            for (int x = 0; x < size; x++)
             {
                 this.availableTravel[x, positionFigure.y] = 1;
             }

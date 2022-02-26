@@ -27,7 +27,7 @@ namespace DesigningChess
                 //int maxTypeFigure = Enum.GetNames(typeof(TypeFigure)).Length;
                 //var numberTypeFigure = rnd.Next(0, maxTypeFigure);
 
-                int numberTypeFigure = 0;
+                int numberTypeFigure = 3;
 
                 // задаем случайные позиции фигуры, с учётом занятого поля
                 int x = rnd.Next(0, size);
@@ -57,6 +57,10 @@ namespace DesigningChess
             {
                 case (int)TypeFigure.Pawn:
                     return new Pawn($"Пешка №{numberFigure}", positionFigure);
+                case (int)TypeFigure.Castle:
+                    return new Castle($"Ладья №{numberFigure}", positionFigure);
+                case (int)TypeFigure.Elephant:
+                    return new Elephant($"Слон №{numberFigure}", positionFigure);
                 //case (int)TypeFigure.Rectangle:
                 //    sizeSide = GetRandomSize();
                 //    sizeSide1 = GetRandomSize();
