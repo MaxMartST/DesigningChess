@@ -27,7 +27,7 @@ namespace DesigningChess
                 //int maxTypeFigure = Enum.GetNames(typeof(TypeFigure)).Length;
                 //var numberTypeFigure = rnd.Next(0, maxTypeFigure);
 
-                int numberTypeFigure = 3;
+                int numberTypeFigure = 2;
 
                 // задаем случайные позиции фигуры, с учётом занятого поля
                 int x = rnd.Next(0, size);
@@ -61,24 +61,8 @@ namespace DesigningChess
                     return new Castle($"Ладья №{numberFigure}", positionFigure);
                 case (int)TypeFigure.Elephant:
                     return new Elephant($"Слон №{numberFigure}", positionFigure);
-                //case (int)TypeFigure.Rectangle:
-                //    sizeSide = GetRandomSize();
-                //    sizeSide1 = GetRandomSize();
-                //    return new Rectangle($"Прямоугольник №{numberFigure}", sizeSide, sizeSide1);
-                //case (int)TypeFigure.Triangle:
-                //    sizeSide = GetRandomSize();
-                //    sizeSide1 = GetRandomSize();
-                //    sizeSide2 = GetRandomSize();
-                //    return new Triangle($"Треугольник №{numberFigure}", sizeSide, sizeSide1, sizeSide2);
-                //case (int)TypeFigure.Circle:
-                //    sizeSide = GetRandomSize();
-                //    return new Circle($"Круг №{numberFigure}", sizeSide);
-                //case (int)TypeFigure.Cube:
-                //    sizeSide = GetRandomSize();
-                //    return new Cube($"Куб №{numberFigure}", sizeSide);
-                //case (int)TypeFigure.Ball:
-                //    sizeSide = GetRandomSize();
-                //    return new Ball($"Шар №{numberFigure}", sizeSide);
+                case (int)TypeFigure.Queen:
+                    return new Queen($"Королева №{numberFigure}", positionFigure);
                 default:
                     throw new FigureException("Тип фигуры не найден");
             }

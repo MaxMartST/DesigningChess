@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace DesigningChess
 {
-    class Elephant : Figure
+    class Queen : Figure
     {
         int[,] availableTravel;
         private const int size = 8;
 
-        public Elephant(string nameFigure, (int x, int y) positionFigure) :
-            base(TypeFigure.Elephant, nameFigure, positionFigure)
+        public Queen(string nameFigure, (int x, int y) positionFigure) :
+            base(TypeFigure.Queen, nameFigure, positionFigure)
         {
             SetAvailableTravelAndPosition(positionFigure);
         }
@@ -46,9 +46,23 @@ namespace DesigningChess
             this.availableTravel[positionFigure.x, positionFigure.y] = 1;
 
             // Отмечаем позиции, куда может сделать ход фигура
-            // Вниз справа на лево
             int x = positionFigure.x;
             int y = positionFigure.y;
+
+            // По оси X и по оси Y
+            for (y = 0; y < size; y++)
+            {
+                this.availableTravel[positionFigure.x, y] = 1;
+            }
+
+            for (x = 0; x < size; x++)
+            {
+                this.availableTravel[x, positionFigure.y] = 1;
+            }
+
+            // Вниз справа на лево
+            x = positionFigure.x;
+            y = positionFigure.y;
 
             while (x < size && y >= 0)
             {
