@@ -6,8 +6,20 @@ namespace DesigningChess
     {
         static void Main(string[] args)
         {
-            Console.Write("Введите количество фигур на шахматной доске: ");
-            int amountFigures = Convert.ToInt32(Console.ReadLine());
+            int amountFigures = 0;
+
+            do 
+            {
+                Console.Write("Введите количество фигур на шахматной доске: ");
+                amountFigures = Convert.ToInt32(Console.ReadLine());
+
+                if (amountFigures > 64)
+                {
+                    Console.WriteLine("Количество фигур превышает допустимое количество в размере 64");
+                }
+            } 
+            while (amountFigures > 64);
+            
 
             Chess chess = new Chess(amountFigures);
             chess.MakeMove();
