@@ -26,7 +26,7 @@ namespace DesigningChess
 
             if (field[newPositionFigure.x, newPositionFigure.y] == 1)
             {
-                throw new FigureException($"Фигура под именем: {this.Name}, не может перейти на поле, на котором она уже стоит другая фигура.");
+                throw new FigureException($"Фигура под именем: {this.Name}, не может перейти на поле, на котором уже стоит другая фигура.");
             }
 
             if (availableTravel[newPositionFigure.x, newPositionFigure.y] != 1)

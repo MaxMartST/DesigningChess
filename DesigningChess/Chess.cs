@@ -27,7 +27,7 @@ namespace DesigningChess
                 //int maxTypeFigure = Enum.GetNames(typeof(TypeFigure)).Length;
                 //var numberTypeFigure = rnd.Next(0, maxTypeFigure);
 
-                int numberTypeFigure = 2;
+                int numberTypeFigure = 5;
 
                 // задаем случайные позиции фигуры, с учётом занятого поля
                 int x = rnd.Next(0, size);
@@ -63,6 +63,8 @@ namespace DesigningChess
                     return new Elephant($"Слон №{numberFigure}", positionFigure);
                 case (int)TypeFigure.Queen:
                     return new Queen($"Королева №{numberFigure}", positionFigure);
+                case (int)TypeFigure.Horse:
+                    return new Horse($"Конь №{numberFigure}", positionFigure);
                 default:
                     throw new FigureException("Тип фигуры не найден");
             }
@@ -110,7 +112,7 @@ namespace DesigningChess
                     // Находим индекс интересующей нас фигуры
                     var indexFigure = GetIndexFigure(input);
 
-                    Console.WriteLine($"Введите координаты для фигуры {input} по X и Y.");
+                    Console.WriteLine($"Для перемещения, введите координаты для фигуры {input} по X и Y");
                     (int x, int y) position;
 
                     Console.Write("X : ");
