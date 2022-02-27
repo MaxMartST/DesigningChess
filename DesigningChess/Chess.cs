@@ -27,7 +27,7 @@ namespace DesigningChess
                 //int maxTypeFigure = Enum.GetNames(typeof(TypeFigure)).Length;
                 //var numberTypeFigure = rnd.Next(0, maxTypeFigure);
 
-                int numberTypeFigure = 5;
+                int numberTypeFigure = 1;
 
                 // задаем случайные позиции фигуры, с учётом занятого поля
                 int x = rnd.Next(0, size);
@@ -65,6 +65,8 @@ namespace DesigningChess
                     return new Queen($"Королева №{numberFigure}", positionFigure);
                 case (int)TypeFigure.Horse:
                     return new Horse($"Конь №{numberFigure}", positionFigure);
+                case (int)TypeFigure.King:
+                    return new King($"Король №{numberFigure}", positionFigure);
                 default:
                     throw new FigureException("Тип фигуры не найден");
             }

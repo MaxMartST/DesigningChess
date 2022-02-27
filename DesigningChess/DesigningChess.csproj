@@ -49,6 +49,7 @@
     <Compile Include="Figure.cs" />
     <Compile Include="FigureException.cs" />
     <Compile Include="Horse.cs" />
+    <Compile Include="King.cs" />
     <Compile Include="Pawn.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

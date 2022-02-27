@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace DesigningChess
 {
-    class Horse : Figure
+    class King : Figure
     {
         int[,] availableTravel;
         private const int size = 8;
 
-        public Horse(string nameFigure, (int x, int y) positionFigure) :
-            base(TypeFigure.Horse, nameFigure, positionFigure)
+        public King(string nameFigure, (int x, int y) positionFigure) :
+            base(TypeFigure.King, nameFigure, positionFigure)
         {
             SetAvailableTravelAndPosition(positionFigure);
         }
@@ -49,82 +49,69 @@ namespace DesigningChess
             int x, y;
 
             // Указываем позиции по вертикале
-            x = positionFigure.x - 2;
+            x = positionFigure.x - 1;
 
             if (x >= 0)
             {
-                y = positionFigure.y - 1;
-
-                if (y >= 0)
-                {
-                    this.availableTravel[x, y] = 1;
-                }
-
-                y = positionFigure.y + 1;
-
-                if (y < size)
-                {
-                    this.availableTravel[x, y] = 1;
-                }
+                this.availableTravel[x, positionFigure.y] = 1;
             }
 
-            x = positionFigure.x + 2;
+            x = positionFigure.x + 1;
 
             if (x < size)
             {
-                y = positionFigure.y - 1;
-
-                if (y >= 0)
-                {
-                    this.availableTravel[x, y] = 1;
-                }
-
-                y = positionFigure.y + 1;
-
-                if (y < size)
-                {
-                    this.availableTravel[x, y] = 1;
-                }
+                this.availableTravel[x, positionFigure.y] = 1;
             }
 
             // Указываем позиции по горизонтале
-
-            y = positionFigure.y - 2;
+            y = positionFigure.y - 1;
 
             if (y >= 0)
             {
-                x = positionFigure.x - 1;
-
-                if (x >= 0)
-                {
-                    this.availableTravel[x, y] = 1;
-                }
-
-                x = positionFigure.x + 1;
-
-                if (x < size)
-                {
-                    this.availableTravel[x, y] = 1;
-                }
+                this.availableTravel[positionFigure.x, y] = 1;
             }
 
-            y = positionFigure.y + 2;
+            y = positionFigure.y + 1;
 
             if (y < size)
             {
-                x = positionFigure.x - 1;
+                this.availableTravel[positionFigure.x, y] = 1;
+            }
 
-                if (x >= 0)
-                {
-                    this.availableTravel[x, y] = 1;
-                }
+            // Вниз справа на лево
+            x = positionFigure.x + 1;
+            y = positionFigure.y - 1;
 
-                x = positionFigure.x + 1;
+            if (x < size && y >= 0)
+            {
+                this.availableTravel[x, y] = 1;
+            }
 
-                if (x < size)
-                {
-                    this.availableTravel[x, y] = 1;
-                }
+            // Вверх слева на право
+            x = positionFigure.x - 1;
+            y = positionFigure.y + 1;
+
+            if (x > 0 && y < size)
+            {
+                this.availableTravel[x, y] = 1;
+            }
+
+            // Вверх справа на лево
+            x = positionFigure.x - 1;
+            y = positionFigure.y - 1;
+
+            if (x >= 0 && y >= 0)
+            {
+                this.availableTravel[x, y] = 1;
+            }
+
+            // Вниз слева на право
+            x = positionFigure.x + 1;
+            y = positionFigure.y + 1;
+
+            if (x < size && y < size)
+            {
+                this.availableTravel[x, y] = 1;
             }
         }
     }
