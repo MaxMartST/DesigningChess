@@ -17,17 +17,11 @@ namespace DesigningChess
             Random rnd = new Random();
             int numberFigure = 0;
 
-            // насальная позиция
-            //int x = 0;
-            //int y = 0;
-
             while (numberFigure < amountFigures)
             {
                 // задвем случайный тип фигуры
-                //int maxTypeFigure = Enum.GetNames(typeof(TypeFigure)).Length;
-                //var numberTypeFigure = rnd.Next(0, maxTypeFigure);
-
-                int numberTypeFigure = 1;
+                int maxTypeFigure = Enum.GetNames(typeof(TypeFigure)).Length;
+                var numberTypeFigure = rnd.Next(0, maxTypeFigure);
 
                 // задаем случайные позиции фигуры, с учётом занятого поля
                 int x = rnd.Next(0, size);
@@ -44,10 +38,6 @@ namespace DesigningChess
                 this.figures[numberFigure] = GetRandomFigure(position, numberFigure, numberTypeFigure);
 
                 numberFigure++;
-
-                // следующая позиция
-                //x++;
-                //y++;
             }
         }
 

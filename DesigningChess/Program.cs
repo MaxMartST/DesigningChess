@@ -6,7 +6,9 @@ namespace DesigningChess
     {
         static void Main(string[] args)
         {
-            int amountFigures = 3;
+            Console.Write("Введите количество фигур на шахматной доске: ");
+            int amountFigures = Convert.ToInt32(Console.ReadLine());
+
             Chess chess = new Chess(amountFigures);
             chess.MakeMove();
 
